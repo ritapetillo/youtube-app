@@ -1,16 +1,32 @@
-import React from "react";
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import React, { useRef, RefObject } from "react";
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  SafeAreaView,
+  Pressable,
+} from "react-native";
 import video from "../../assets/data/video.json";
+import videos from "../../assets/data/videos.json";
 import { styles } from "./styles";
 import { AntDesign } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
+import VideoListItem, { VideoProps } from "../../components/VideoListItem";
+import BottonSheet from "@gorhom/bottom-sheet";
+import VideoComments from "../../components/VideoComments";
 
-const VideoScreen = () => {
+interface VideoScreenProps {
+  openComment: () => void;
+}
+
+const VideoScreen: React.FC<VideoScreenProps> = ({ openComment }) => {
   return (
-    <SafeAreaView>
+    <View>
       <Image style={styles.videoPlayer} source={{ uri: video.thumbnail }} />
       <View style={styles.infoContainer}>
         <Text style={styles.tags}>{video.tags}</Text>
@@ -72,18 +88,54 @@ const VideoScreen = () => {
           Comments
           <Text style={{ color: "lightgrey" }}> 333</Text>
         </Text>
-        <View style={styles.commentItem}>
-          <Image
-            style={{ height: 25, width: 25, borderRadius: 13, marginRight: 10 }}
-            source={{ uri: video.user.image }}
-          />
-          <Text style={{ color: "white", fontSize: 12 }}>
-            Some comments here
-          </Text>
-        </View>
+        <Pressable onPress={openComment}>
+          <View style={styles.commentItem}>
+            <Image
+              style={{
+                height: 25,
+                width: 25,
+                borderRadius: 13,
+                marginRight: 10,
+              }}
+              source={{ uri: video.user.image }}
+            />
+            <Text style={{ color: "white", fontSize: 12 }}>
+              Some comments here
+            </Text>
+          </View>
+        </Pressable>
       </View>
+
+      {/* Video List */}
+    </View>
+  );
+};
+
+const videoScrenWithRecomandation = () => {
+  const bottomRef = useRef<BottonSheet>(null);
+  const openComment = () => {
+    bottomRef.current?.expand();
+  };
+
+  return (
+    <SafeAreaView>
+      <FlatList
+        data={videos}
+        renderItem={({ item }) => <VideoListItem video={item} />}
+        ListHeaderComponent={<VideoScreen openComment={openComment} />}
+      />
+      <BottonSheet
+        snapPoints={[0, "60%"]}
+        index={0}
+        ref={bottomRef}
+        backgroundComponent={(item) => (
+          <View style={{ backgroundColor: "#fff", borderRadius: 10 }} />
+        )}
+      >
+        <VideoComments video={video} />
+      </BottonSheet>
     </SafeAreaView>
   );
 };
 
-export default VideoScreen;
+export default videoScrenWithRecomandation;

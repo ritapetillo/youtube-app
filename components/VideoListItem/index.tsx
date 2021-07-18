@@ -1,7 +1,9 @@
 import React, { useCallback } from "react";
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text, View, Image, Pressable } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 import { styles } from "./styles";
+import VideoPlayer from "../VideoPlayer";
+import { useNavigation } from "@react-navigation/native";
 
 export interface VideoProps {
   video: {
@@ -20,6 +22,8 @@ export interface VideoProps {
 }
 
 const VideoListItem: React.FC<VideoProps> = ({ video }) => {
+  const navigation = useNavigation();
+
   const minutes = useCallback(() => {
     const min = Math.floor(video.duration / 60);
     if (min < 10) return `0${min}`;
@@ -44,11 +48,9 @@ const VideoListItem: React.FC<VideoProps> = ({ video }) => {
       {/* Video Component */}
       <View>
         <View style={styles.videoCard}>
-          <Image
-            style={styles.thumbNail}
-            source={{
-              uri: video.thumbnail,
-            }}
+          <VideoPlayer
+            videoURI={video.videoUrl}
+            thumbnailURI={video.thumbnail}
           />
 
           <View style={styles.timeContainer}>
@@ -65,13 +67,15 @@ const VideoListItem: React.FC<VideoProps> = ({ video }) => {
             uri: video.user.image,
           }}
         />
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}>{video.title}</Text>
+        <Pressable onPress={() => navigation.navigate("VideoScreen")}>
+          <View style={styles.titleContainer}>
+            <Text style={styles.title}>{video.title}</Text>
 
-          <Text style={styles.subTitle}>
-            {video.user.name} · {views()} · {video.createdAt}
-          </Text>
-        </View>
+            <Text style={styles.subTitle}>
+              {video.user.name} · {views()} · {video.createdAt}
+            </Text>
+          </View>
+        </Pressable>
         <Entypo
           name="dots-three-vertical"
           size={16}
