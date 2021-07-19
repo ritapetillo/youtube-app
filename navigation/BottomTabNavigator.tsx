@@ -14,6 +14,7 @@ import HomeScreen from "../screens/HomeScreen";
 import TabTwoScreen from "../screens/TabTwoScreen";
 import VideoScreen from "../screens/VideoScreen/VideoScreen";
 import { BottomTabParamList, TabOneParamList, TabTwoParamList } from "../types";
+import { Button } from "react-native";
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -66,7 +67,16 @@ function TabOneNavigator() {
       <TabOneStack.Screen
         name="TabOneScreen"
         component={HomeScreen}
-        options={{ headerTitle: "Home" }}
+        options={{
+          headerTitle: "Home",
+          headerRight: () => (
+            <Button
+              onPress={() => alert("This is a button!")}
+              title="Info"
+              color="#fff"
+            />
+          ),
+        }}
       />
     </TabOneStack.Navigator>
   );
@@ -80,7 +90,7 @@ function TabTwoNavigator() {
       <TabTwoStack.Screen
         name="TabTwoScreen"
         component={VideoScreen}
-        options={{ headerTitle: "Tab Two Title" }}
+        options={{ headerTitle: "Explore" }}
       />
     </TabTwoStack.Navigator>
   );

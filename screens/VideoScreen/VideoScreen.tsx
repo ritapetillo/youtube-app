@@ -129,7 +129,12 @@ const videoScrenWithRecomandation = () => {
         index={0}
         ref={bottomRef}
         backgroundComponent={(item) => (
-          <View style={{ backgroundColor: "#fff", borderRadius: 10 }} />
+          <View
+            style={{
+              backgroundColor: "#fff",
+              borderRadius: 10,
+            }}
+          />
         )}
       >
         <VideoComments video={video} />
