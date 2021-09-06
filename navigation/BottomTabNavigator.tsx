@@ -14,7 +14,22 @@ import HomeScreen from "../screens/HomeScreen";
 import TabTwoScreen from "../screens/TabTwoScreen";
 import VideoScreen from "../screens/VideoScreen/VideoScreen";
 import { BottomTabParamList, TabOneParamList, TabTwoParamList } from "../types";
-import { Button } from "react-native";
+import { Button, SafeAreaView, View, Image } from "react-native";
+
+const CustomHeader = () => {
+  return (
+    <SafeAreaView>
+      <View>
+        <Image
+          source={{
+            uri: "https://www.pikpng.com/pngl/b/183-1830659_white-youtube-icon-transparent-background-youtube-logo-white.png",
+          }}
+          style={{ width: 100, height: 30, marginLeft: 10 }}
+        />
+      </View>
+    </SafeAreaView>
+  );
+};
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -76,6 +91,7 @@ function TabOneNavigator() {
               color="#fff"
             />
           ),
+          headerLeft: () => <CustomHeader />,
         }}
       />
     </TabOneStack.Navigator>
